@@ -1,12 +1,21 @@
 import 'package:cinemanic/screens/home_screen.dart';
 import 'package:cinemanic/screens/welcome_screen.dart';
-import 'package:cinemanic/utils/notifiers.dart';
+import 'package:cinemanic/widgets/theme_switcher_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AuthGate extends StatelessWidget {
+class AuthGate extends StatefulWidget {
   const AuthGate({super.key});
+
+  @override
+  State<AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<AuthGate> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +31,18 @@ class AuthGate extends StatelessWidget {
         if (snapshot.hasData) {
           return Scaffold(
             appBar: AppBar(
-              actions: [
-                ValueListenableBuilder(
-                  valueListenable: isDarkNotifier,
-                  builder: (context, isDark, child) {
-                    return IconButton(
-                      onPressed: () {
-                        isDarkNotifier.value = !isDark;
-                      },
-                      icon: Icon(
-                        isDark ? CupertinoIcons.moon : CupertinoIcons.sun_max,
-                      ),
-                    );
-                  },
+              actionsPadding: EdgeInsets.symmetric(horizontal: 4),
+              title: Text(
+                'Cinemanic',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
                 ),
-              ],
+              ),
+              actions: [ThemeSwitcherWidget()],
             ),
             body: HomeScreen(),
           );

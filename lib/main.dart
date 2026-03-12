@@ -4,10 +4,12 @@ import 'package:cinemanic/utils/constants.dart';
 import 'package:cinemanic/utils/notifiers.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: '.env');
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
@@ -28,7 +30,14 @@ class _MyAppState extends State<MyApp> {
 
   void loadThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
+
+    // 1. Load the initial value
     isDarkNotifier.value = prefs.getBool(isDarkKey) ?? true;
+
+    // 2. Add a listener to save the value whenever it changes
+    isDarkNotifier.addListener(() {
+      prefs.setBool(isDarkKey, isDarkNotifier.value);
+    });
   }
 
   // This widget is the root of your application.

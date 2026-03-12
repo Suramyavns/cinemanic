@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cinemanic/widgets/welcome_background.dart';
-import 'package:cinemanic/widgets/welcome_header.dart';
-import 'package:cinemanic/widgets/google_sign_in_button.dart';
+import 'package:cinemanic/widgets/welcome_screen_widgets/welcome_background.dart';
+import 'package:cinemanic/widgets/welcome_screen_widgets/welcome_header.dart';
+import 'package:cinemanic/widgets/welcome_screen_widgets/google_sign_in_button.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
