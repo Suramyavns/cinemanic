@@ -1,7 +1,6 @@
+import 'package:adblocker_webview/adblocker_webview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:cinemanic/services/content_api/player.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
@@ -19,7 +18,6 @@ class VideoPlayerScreen extends StatefulWidget {
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  WebViewController? _controller;
   bool _isLoading = true;
   String? _videoUrl;
   bool _hasError = false;
@@ -27,7 +25,16 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   void initState() {
     super.initState();
+    _lockOrientation();
     _loadVideoUrl();
+  }
+
+  void _lockOrientation() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   }
 
   void _resetOrientation() {
@@ -43,30 +50,12 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Future<void> _loadVideoUrl() async {
     try {
       final url = await fetchVideoPlayer(widget.toPlay);
-      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-      // if (mounted) {
-      //   setState(() {
-      //     _videoUrl = url;
-      //     _controller = WebViewController()
-      //       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      //       ..setBackgroundColor(Colors.black)
-      //       ..setNavigationDelegate(
-      //         NavigationDelegate(
-      //           onPageFinished: (String url) {
-      //             if (mounted) {
-      //               setState(() {
-      //                 _isLoading = false;
-      //               });
-      //             }
-      //           },
-      //         ),
-      //       )
-      //       ..loadHtmlString("""
-      //                               <iframe src="$_videoUrl" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
-
-      //         """);
-      //   });
-      // }
+      if (mounted) {
+        setState(() {
+          _videoUrl = url;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       if (mounted) {
         setState(() {
@@ -90,9 +79,27 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          if (_videoUrl != null && _controller != null)
-            WebViewWidget(controller: _controller!)
-          else if (_isLoading)
+          if (_videoUrl != null)
+            AdBlockerWebview(
+              shouldBlockAds: true,
+              adBlockerWebviewController: AdBlockerWebviewController.instance,
+              initialHtmlData: """
+                <!DOCTYPE html>
+                <html>
+                  <head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+                    <style>
+                      body, html { margin: 0; padding: 0; height: 100%; width: 100%; background: black; overflow: hidden; }
+                      iframe { width: 100%; height: 100%; border: none; }
+                    </style>
+                  </head>
+                  <body>
+                    <iframe src="$_videoUrl" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+                  </body>
+                </html>
+              """,
+            ),
+          if (_isLoading)
             const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

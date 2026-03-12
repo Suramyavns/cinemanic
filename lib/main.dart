@@ -1,3 +1,4 @@
+import 'package:adblocker_webview/adblocker_webview.dart';
 import 'package:cinemanic/firebase_options.dart';
 import 'package:cinemanic/utils/auth_gate.dart';
 import 'package:cinemanic/utils/constants.dart';
@@ -11,6 +12,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await AdBlockerWebviewController.instance.initialize(
+    FilterConfig(filterTypes: [FilterType.easyList, FilterType.adGuard]),
+  );
   runApp(const MyApp());
 }
 

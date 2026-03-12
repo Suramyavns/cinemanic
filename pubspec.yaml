@@ -47,6 +47,9 @@ dependencies:
   flutter_dotenv: ^6.0.0
   webview_flutter: ^4.13.1
   url_launcher: ^6.3.2
+  adblocker_webview: ^2.3.0
+  adblocker_core: ^1.1.0
+  adblocker_manager: ^1.1.0
 
 dev_dependencies:
   flutter_test:

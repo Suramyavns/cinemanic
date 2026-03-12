@@ -1,7 +1,6 @@
-import 'package:cinemanic/services/content_api/player.dart';
+import 'package:cinemanic/screens/video_player.dart';
 import 'package:cinemanic/utils/images.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class BannerWidget extends StatelessWidget {
   const BannerWidget({
@@ -49,14 +48,16 @@ class BannerWidget extends StatelessWidget {
                   height: 54,
                   child: FilledButton.icon(
                     onPressed: () async {
-                      final url = await fetchVideoPlayer(
-                        mediaType == 'tv'
-                            ? '$mediaType/$contentId/1/1'
-                            : '$mediaType/$contentId',
-                      );
-                      await launchUrl(
-                        Uri.parse(url),
-                        mode: LaunchMode.externalApplication,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => VideoPlayerScreen(
+                            toPlay: mediaType == 'tv'
+                                ? '$mediaType/$contentId/1/1'
+                                : '$mediaType/$contentId',
+                            mediaType: mediaType,
+                          ),
+                        ),
                       );
                     },
                     icon: const Icon(Icons.play_arrow_rounded, size: 30),
