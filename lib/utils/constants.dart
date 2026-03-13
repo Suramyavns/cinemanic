@@ -11,4 +11,9 @@ class KTextStyle extends TextStyle {
   );
 
   static const TextStyle bodyTextStyle = TextStyle(fontSize: 14);
+
+  static const TextStyle buttonTextStyle = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  );
 }

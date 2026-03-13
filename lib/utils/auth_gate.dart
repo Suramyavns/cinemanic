@@ -1,6 +1,9 @@
 import 'package:cinemanic/screens/home_screen.dart';
+import 'package:cinemanic/screens/profile_screen.dart';
 import 'package:cinemanic/screens/welcome_screen.dart';
+import 'package:cinemanic/utils/notifiers.dart';
 import 'package:cinemanic/widgets/reusable_widgets/custom_appbar_widget.dart';
+import 'package:cinemanic/widgets/reusable_widgets/navigation_bar_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +20,7 @@ class _AuthGateState extends State<AuthGate> {
     super.initState();
   }
 
+  final List<Widget> screens = [HomeScreen(), ProfileScreen()];
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
@@ -29,7 +33,16 @@ class _AuthGateState extends State<AuthGate> {
         }
 
         if (snapshot.hasData) {
-          return Scaffold(appBar: CustomAppBarWidget(), body: HomeScreen());
+          return Scaffold(
+            appBar: CustomAppBarWidget(),
+            body: ValueListenableBuilder(
+              valueListenable: selectedIndexNotifier,
+              builder: (context, selectedtIndex, child) {
+                return screens.elementAt(selectedtIndex);
+              },
+            ),
+            bottomNavigationBar: NavigationBarWidget(),
+          );
         }
 
         return const WelcomeScreen();
