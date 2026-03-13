@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchBarWidget extends StatefulWidget {
-  const SearchBarWidget({super.key});
+  final ValueChanged<String>? onChanged;
+  const SearchBarWidget({super.key, this.onChanged});
 
   @override
   State<SearchBarWidget> createState() => _SearchBarWidgetState();
@@ -10,6 +11,20 @@ class SearchBarWidget extends StatefulWidget {
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
   final TextEditingController controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +48,8 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
         ],
       ),
       child: TextField(
+        controller: controller,
+        onChanged: widget.onChanged,
         // Text color automatically follows Theme.textTheme
         style: theme.textTheme.bodyLarge,
         cursorColor: theme.colorScheme.primary,
@@ -45,6 +62,17 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
             CupertinoIcons.search,
             color: theme.colorScheme.primary,
           ),
+          suffixIcon: controller.text.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(CupertinoIcons.clear_circled_solid),
+                  onPressed: () {
+                    controller.clear();
+                    if (widget.onChanged != null) {
+                      widget.onChanged!('');
+                    }
+                  },
+                )
+              : null,
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 15),
         ),

@@ -6,10 +6,12 @@ class ContentDetailsWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.description,
+    required this.genres,
   });
 
   final String title;
   final String description;
+  final List<String> genres;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +31,16 @@ class ContentDetailsWidget extends StatelessWidget {
           ),
           Text(
             description,
+            style: KTextStyle.bodyTextStyle.copyWith(fontSize: 16, height: 1.5),
+            textAlign: TextAlign.left,
+            softWrap: true,
+          ),
+          Text(
+            'Genres: ${genres.join(', ')}',
             style: KTextStyle.bodyTextStyle.copyWith(
               fontSize: 16,
-              color: Colors.grey[400],
               height: 1.5,
+              color: Colors.grey,
             ),
             textAlign: TextAlign.left,
             softWrap: true,

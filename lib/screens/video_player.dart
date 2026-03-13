@@ -1,16 +1,19 @@
-import 'package:adblocker_webview/adblocker_webview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:adblocker_webview/adblocker_webview.dart';
 import 'package:cinemanic/services/content_api/player.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final String toPlay;
   final String mediaType;
+  final int? startAt;
 
   const VideoPlayerScreen({
     super.key,
     required this.toPlay,
     required this.mediaType,
+    this.startAt,
   });
 
   @override
@@ -49,10 +52,14 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   Future<void> _loadVideoUrl() async {
     try {
-      final url = await fetchVideoPlayer(widget.toPlay);
+      final token = await FirebaseAuth.instance.currentUser?.getIdToken();
+      final url = await fetchVideoPlayer(widget.toPlay, token!, startAt: widget.startAt);
+
+      String finalUrl = url;
+
       if (mounted) {
         setState(() {
-          _videoUrl = url;
+          _videoUrl = finalUrl;
           _isLoading = false;
         });
       }
@@ -81,23 +88,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         children: [
           if (_videoUrl != null)
             AdBlockerWebview(
+              url: Uri.parse(_videoUrl!),
               shouldBlockAds: true,
               adBlockerWebviewController: AdBlockerWebviewController.instance,
-              initialHtmlData: """
-                <!DOCTYPE html>
-                <html>
-                  <head>
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-                    <style>
-                      body, html { margin: 0; padding: 0; height: 100%; width: 100%; background: black; overflow: hidden; }
-                      iframe { width: 100%; height: 100%; border: none; }
-                    </style>
-                  </head>
-                  <body>
-                    <iframe src="$_videoUrl" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
-                  </body>
-                </html>
-              """,
             ),
           if (_isLoading)
             const Center(

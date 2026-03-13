@@ -3,16 +3,24 @@ import 'package:cinemanic/utils/images.dart';
 import 'package:flutter/material.dart';
 
 class BannerWidget extends StatelessWidget {
+  final int contentId;
+  final String imagePath;
+  final String mediaType;
+  final int? startAt;
+  final int? lastSeasonWatched;
+  final int? lastEpisodeWatched;
+  final VoidCallback? onReturn;
+
   const BannerWidget({
     super.key,
     required this.contentId,
     required this.imagePath,
     required this.mediaType,
+    this.startAt,
+    this.lastSeasonWatched,
+    this.lastEpisodeWatched,
+    this.onReturn,
   });
-
-  final int contentId;
-  final String imagePath;
-  final String mediaType;
 
   @override
   Widget build(BuildContext context) {
@@ -48,23 +56,31 @@ class BannerWidget extends StatelessWidget {
                   height: 54,
                   child: FilledButton.icon(
                     onPressed: () async {
-                      Navigator.push(
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => VideoPlayerScreen(
                             toPlay: mediaType == 'tv'
-                                ? '$mediaType/$contentId/1/1'
+                                ? '$mediaType/$contentId/${lastSeasonWatched ?? 1}/${lastEpisodeWatched ?? 1}'
                                 : '$mediaType/$contentId',
                             mediaType: mediaType,
+                            startAt: startAt,
                           ),
                         ),
                       );
+                      if (onReturn != null) onReturn!();
                     },
                     icon: const Icon(Icons.play_arrow_rounded, size: 30),
                     label: Text(
-                      mediaType == 'tv' ? 'Play S01E01' : 'Play',
+                      mediaType == 'tv'
+                          ? (lastSeasonWatched != null
+                                ? 'Continue S$lastSeasonWatched E$lastEpisodeWatched'
+                                : 'Play S01E01')
+                          : (startAt != null ? 'Continue' : 'Play'),
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: mediaType == 'tv' && lastSeasonWatched != null
+                            ? 14
+                            : 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

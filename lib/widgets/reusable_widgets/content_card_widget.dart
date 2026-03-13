@@ -7,11 +7,13 @@ class ContentCardWidget extends StatefulWidget {
     required this.imageSrc,
     required this.contentId,
     required this.mediaType,
+    this.onReturn,
   });
 
   final String imageSrc;
   final int contentId;
   final String mediaType;
+  final VoidCallback? onReturn;
 
   @override
   State<ContentCardWidget> createState() => _ContentCardWidgetState();
@@ -20,11 +22,11 @@ class ContentCardWidget extends StatefulWidget {
 class _ContentCardWidgetState extends State<ContentCardWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width / 4,
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(
+        onTap: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ContentScreen(
@@ -33,6 +35,7 @@ class _ContentCardWidgetState extends State<ContentCardWidget> {
               ),
             ),
           );
+          if (widget.onReturn != null) widget.onReturn!();
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
