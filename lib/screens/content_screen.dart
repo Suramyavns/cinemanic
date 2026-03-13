@@ -126,10 +126,11 @@ class _ContentScreenState extends State<ContentScreen> {
 
   bool get _isAnime {
     if (widget.mediaType != 'tv' || tvData == null) return false;
-    final hasAnimeGenre = tvData!.genres.any(
+    final data = tvData!;
+    final hasAnimeGenre = data.genres.any(
       (g) => g.name.toLowerCase() == 'animation',
     );
-    final isFromJapan = tvData!.originCountry.contains('JP');
+    final isFromJapan = data.originCountry.contains('JP');
     return hasAnimeGenre && isFromJapan;
   }
 
@@ -186,8 +187,8 @@ class _ContentScreenState extends State<ContentScreen> {
                 BannerWidget(
                   contentId: widget.contentId,
                   imagePath: widget.mediaType == 'tv'
-                      ? tvData!.backdropPath!
-                      : movieData!.backdropPath!,
+                      ? (tvData?.backdropUrl ?? '')
+                      : (movieData?.backdropUrl ?? ''),
                   mediaType: widget.mediaType,
                   startAt: startAtProgress,
                   lastSeasonWatched: lastSeasonWatched,
@@ -196,20 +197,20 @@ class _ContentScreenState extends State<ContentScreen> {
                 ),
                 ContentDetailsWidget(
                   title: widget.mediaType == 'tv'
-                      ? tvData!.name
-                      : movieData!.title,
+                      ? (tvData?.name ?? '')
+                      : (movieData?.title ?? ''),
                   description: widget.mediaType == 'tv'
-                      ? tvData!.overview
-                      : movieData!.overview,
+                      ? (tvData?.overview ?? '')
+                      : (movieData?.overview ?? ''),
                   genres: widget.mediaType == 'tv'
-                      ? tvData!.genreNames
-                      : movieData!.genreNames,
+                      ? (tvData?.genreNames ?? [])
+                      : (movieData?.genreNames ?? []),
                 ),
                 _buildReviewButton(),
                 Column(
                   spacing: 0,
                   children: [
-                    if (widget.mediaType == 'tv')
+                    if (widget.mediaType == 'tv' && tvData != null)
                       SeasonSelectorWidget(
                         tvId: widget.contentId,
                         seasons: tvData!.seasons
@@ -230,14 +231,19 @@ class _ContentScreenState extends State<ContentScreen> {
                         onReturn: loadData,
                       ),
                     ContentTabsWidget(
-                      credits: credits!,
+                      credits: credits ??
+                          CreditResponse(
+                            id: widget.contentId,
+                            cast: [],
+                            crew: [],
+                          ),
                       genres: widget.mediaType == 'tv'
-                          ? tvData!.genreNames
-                          : movieData!.genreNames,
-                      altTitles: altTitles!,
-                      releases: releases!,
+                          ? (tvData?.genres ?? [])
+                          : (movieData?.genres ?? []),
+                      altTitles: altTitles ?? [],
+                      releases: releases ?? [],
                       studios: widget.mediaType == 'tv'
-                          ? tvData!.productionCompanies
+                          ? (tvData?.productionCompanies
                                 .map(
                                   (c) => ProductionCompany(
                                     id: c.id,
@@ -246,8 +252,8 @@ class _ContentScreenState extends State<ContentScreen> {
                                     originCountry: c.originCountry,
                                   ),
                                 )
-                                .toList()
-                          : movieData!.productionCompanies
+                                .toList() ?? [])
+                          : (movieData?.productionCompanies
                                 .map(
                                   (c) => ProductionCompany(
                                     id: c.id,
@@ -256,27 +262,27 @@ class _ContentScreenState extends State<ContentScreen> {
                                     originCountry: c.originCountry,
                                   ),
                                 )
-                                .toList(),
+                                .toList() ?? []),
                       countries: widget.mediaType == 'tv'
-                          ? tvData!.productionCountries
+                          ? (tvData?.productionCountries
                                 .map(
                                   (c) => ProductionCountry(
                                     iso31661: c.iso31661,
                                     name: c.name,
                                   ),
                                 )
-                                .toList()
-                          : movieData!.productionCountries
+                                .toList() ?? [])
+                          : (movieData?.productionCountries
                                 .map(
                                   (c) => ProductionCountry(
                                     iso31661: c.iso31661,
                                     name: c.name,
                                   ),
                                 )
-                                .toList(),
+                                .toList() ?? []),
                       originalLanguage: widget.mediaType == 'tv'
-                          ? tvData!.originalLanguage
-                          : movieData!.originalLanguage,
+                          ? (tvData?.originalLanguage ?? '')
+                          : (movieData?.originalLanguage ?? ''),
                     ),
                   ],
                 ),
@@ -289,7 +295,7 @@ class _ContentScreenState extends State<ContentScreen> {
   }
 
   Widget _buildReviewButton() {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
         onPressed: () {

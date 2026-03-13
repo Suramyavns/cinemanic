@@ -121,6 +121,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  crypto:
+    dependency: transitive
+    description:
+      name: crypto
+      sha256: c8ea0233063ba03258fbcf2ca4d6dadfefe14f02fab57702265467a19f27fadf
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
   csslib:
     dependency: transitive
     description:
@@ -137,6 +145,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  dart_date:
+    dependency: "direct main"
+    description:
+      name: dart_date
+      sha256: "629ba0a6e10ac48f57104c17a49228ba185253e4ab9f752c32fafc5e06281678"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.3"
   dbus:
     dependency: transitive
     description:
@@ -145,6 +161,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.12"
+  desktop_webview_auth:
+    dependency: "direct main"
+    description:
+      name: desktop_webview_auth
+      sha256: cd47d8cc97e2121adda213ea600470fd3e8d0e0967ed260b7d9362fc9df38c5c
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.16"
   dio:
     dependency: transitive
     description:
@@ -642,6 +666,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.9"
+  timeago:
+    dependency: transitive
+    description:
+      name: timeago
+      sha256: b05159406a97e1cbb2b9ee4faa9fb096fe0e2dfcd8b08fcd2a00553450d3422e
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.7.1"
   tmdb_api:
     dependency: "direct main"
     description:

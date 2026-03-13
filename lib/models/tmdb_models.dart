@@ -30,11 +30,11 @@ class TmdbSearchResponse {
   }
 
   Map<String, dynamic> toJson() => {
-        'page': page,
-        'results': results.map((e) => e.toJson()).toList(),
-        'total_pages': totalPages,
-        'total_results': totalResults,
-      };
+    'page': page,
+    'results': results.map((e) => e.toJson()).toList(),
+    'total_pages': totalPages,
+    'total_results': totalResults,
+  };
 
   @override
   String toString() =>
@@ -118,7 +118,8 @@ class TmdbMedia {
       id: json['id'] as int? ?? 0,
       adult: json['adult'] as bool? ?? false,
       mediaType: mediaType,
-      genreIds: (json['genre_ids'] as List<dynamic>?)
+      genreIds:
+          (json['genre_ids'] as List<dynamic>?)
               ?.map((e) => e as int)
               .toList() ??
           [],
@@ -256,11 +257,11 @@ class BelongsToCollection {
       );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        if (posterPath != null) 'poster_path': posterPath,
-        if (backdropPath != null) 'backdrop_path': backdropPath,
-      };
+    'id': id,
+    'name': name,
+    if (posterPath != null) 'poster_path': posterPath,
+    if (backdropPath != null) 'backdrop_path': backdropPath,
+  };
 }
 
 class Genre {
@@ -300,11 +301,11 @@ class ProductionCompany {
       );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        if (logoPath != null) 'logo_path': logoPath,
-        'name': name,
-        'origin_country': originCountry,
-      };
+    'id': id,
+    if (logoPath != null) 'logo_path': logoPath,
+    'name': name,
+    'origin_country': originCountry,
+  };
 }
 
 class ProductionCountry {
@@ -334,16 +335,16 @@ class SpokenLanguage {
   });
 
   factory SpokenLanguage.fromJson(Map<String, dynamic> json) => SpokenLanguage(
-        englishName: json['english_name'] as String? ?? '',
-        iso6391: json['iso_639_1'] as String? ?? '',
-        name: json['name'] as String? ?? '',
-      );
+    englishName: json['english_name'] as String? ?? '',
+    iso6391: json['iso_639_1'] as String? ?? '',
+    name: json['name'] as String? ?? '',
+  );
 
   Map<String, dynamic> toJson() => {
-        'english_name': englishName,
-        'iso_639_1': iso6391,
-        'name': name,
-      };
+    'english_name': englishName,
+    'iso_639_1': iso6391,
+    'name': name,
+  };
 }
 
 class Episode {
@@ -379,34 +380,34 @@ class Episode {
       stillPath != null ? 'https://image.tmdb.org/t/p/w300$stillPath' : null;
 
   factory Episode.fromJson(Map<String, dynamic> json) => Episode(
-        id: json['id'] as int,
-        name: json['name'] as String? ?? '',
-        overview: json['overview'] as String? ?? '',
-        voteAverage: (json['vote_average'] as num? ?? 0).toDouble(),
-        voteCount: json['vote_count'] as int? ?? 0,
-        airDate: json['air_date'] as String? ?? '',
-        episodeNumber: json['episode_number'] as int? ?? 0,
-        productionCode: json['production_code'] as String? ?? '',
-        runtime: json['runtime'] as int?,
-        seasonNumber: json['season_number'] as int? ?? 0,
-        showId: json['show_id'] as int? ?? 0,
-        stillPath: json['still_path'] as String?,
-      );
+    id: json['id'] as int,
+    name: json['name'] as String? ?? '',
+    overview: json['overview'] as String? ?? '',
+    voteAverage: (json['vote_average'] as num? ?? 0).toDouble(),
+    voteCount: json['vote_count'] as int? ?? 0,
+    airDate: json['air_date'] as String? ?? '',
+    episodeNumber: json['episode_number'] as int? ?? 0,
+    productionCode: json['production_code'] as String? ?? '',
+    runtime: json['runtime'] as int?,
+    seasonNumber: json['season_number'] as int? ?? 0,
+    showId: json['show_id'] as int? ?? 0,
+    stillPath: json['still_path'] as String?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'overview': overview,
-        'vote_average': voteAverage,
-        'vote_count': voteCount,
-        'air_date': airDate,
-        'episode_number': episodeNumber,
-        'production_code': productionCode,
-        if (runtime != null) 'runtime': runtime,
-        'season_number': seasonNumber,
-        'show_id': showId,
-        if (stillPath != null) 'still_path': stillPath,
-      };
+    'id': id,
+    'name': name,
+    'overview': overview,
+    'vote_average': voteAverage,
+    'vote_count': voteCount,
+    'air_date': airDate,
+    'episode_number': episodeNumber,
+    'production_code': productionCode,
+    if (runtime != null) 'runtime': runtime,
+    'season_number': seasonNumber,
+    'show_id': showId,
+    if (stillPath != null) 'still_path': stillPath,
+  };
 }
 
 class Network {
@@ -426,18 +427,18 @@ class Network {
       logoPath != null ? 'https://image.tmdb.org/t/p/w200$logoPath' : null;
 
   factory Network.fromJson(Map<String, dynamic> json) => Network(
-        id: json['id'] as int,
-        logoPath: json['logo_path'] as String?,
-        name: json['name'] as String? ?? '',
-        originCountry: json['origin_country'] as String? ?? '',
-      );
+    id: json['id'] as int,
+    logoPath: json['logo_path'] as String?,
+    name: json['name'] as String? ?? '',
+    originCountry: json['origin_country'] as String? ?? '',
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        if (logoPath != null) 'logo_path': logoPath,
-        'name': name,
-        'origin_country': originCountry,
-      };
+    'id': id,
+    if (logoPath != null) 'logo_path': logoPath,
+    'name': name,
+    'origin_country': originCountry,
+  };
 }
 
 class Season {
@@ -467,26 +468,26 @@ class Season {
   bool get isSpecials => seasonNumber == 0;
 
   factory Season.fromJson(Map<String, dynamic> json) => Season(
-        airDate: json['air_date'] as String?,
-        episodeCount: json['episode_count'] as int? ?? 0,
-        id: json['id'] as int? ?? 0,
-        name: json['name'] as String? ?? '',
-        overview: json['overview'] as String? ?? '',
-        posterPath: json['poster_path'] as String?,
-        seasonNumber: json['season_number'] as int? ?? 0,
-        voteAverage: (json['vote_average'] as num? ?? 0).toDouble(),
-      );
+    airDate: json['air_date'] as String?,
+    episodeCount: json['episode_count'] as int? ?? 0,
+    id: json['id'] as int? ?? 0,
+    name: json['name'] as String? ?? '',
+    overview: json['overview'] as String? ?? '',
+    posterPath: json['poster_path'] as String?,
+    seasonNumber: json['season_number'] as int? ?? 0,
+    voteAverage: (json['vote_average'] as num? ?? 0).toDouble(),
+  );
 
   Map<String, dynamic> toJson() => {
-        if (airDate != null) 'air_date': airDate,
-        'episode_count': episodeCount,
-        'id': id,
-        'name': name,
-        'overview': overview,
-        if (posterPath != null) 'poster_path': posterPath,
-        'season_number': seasonNumber,
-        'vote_average': voteAverage,
-      };
+    if (airDate != null) 'air_date': airDate,
+    'episode_count': episodeCount,
+    'id': id,
+    'name': name,
+    'overview': overview,
+    if (posterPath != null) 'poster_path': posterPath,
+    'season_number': seasonNumber,
+    'vote_average': voteAverage,
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -524,7 +525,8 @@ class SeasonDetail {
     return SeasonDetail(
       internalId: json['_id'] as String? ?? '',
       airDate: json['air_date'] as String?,
-      episodes: (json['episodes'] as List<dynamic>?)
+      episodes:
+          (json['episodes'] as List<dynamic>?)
               ?.map((e) => Episode.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
@@ -552,11 +554,13 @@ class CreditResponse {
   factory CreditResponse.fromJson(Map<String, dynamic> json) {
     return CreditResponse(
       id: json['id'] as int,
-      cast: (json['cast'] as List<dynamic>?)
+      cast:
+          (json['cast'] as List<dynamic>?)
               ?.map((e) => Cast.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      crew: (json['crew'] as List<dynamic>?)
+      crew:
+          (json['crew'] as List<dynamic>?)
               ?.map((e) => Crew.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
@@ -678,6 +682,7 @@ class ReleaseDate {
     );
   }
 }
+
 class PopularMoviesResponse {
   final int page;
   final List<Movie> results;
@@ -703,11 +708,11 @@ class PopularMoviesResponse {
   }
 
   Map<String, dynamic> toJson() => {
-        'page': page,
-        'results': results.map((e) => e.toJson()).toList(),
-        'total_pages': totalPages,
-        'total_results': totalResults,
-      };
+    'page': page,
+    'results': results.map((e) => e.toJson()).toList(),
+    'total_pages': totalPages,
+    'total_results': totalResults,
+  };
 }
 
 class Movie {
@@ -757,8 +762,9 @@ class Movie {
     return Movie(
       adult: json['adult'] as bool,
       backdropPath: json['backdrop_path'] as String?,
-      genreIds:
-          (json['genre_ids'] as List<dynamic>).map((e) => e as int).toList(),
+      genreIds: (json['genre_ids'] as List<dynamic>)
+          .map((e) => e as int)
+          .toList(),
       id: json['id'] as int,
       originalLanguage: json['original_language'] as String,
       originalTitle: json['original_title'] as String,
@@ -774,21 +780,21 @@ class Movie {
   }
 
   Map<String, dynamic> toJson() => {
-        'adult': adult,
-        if (backdropPath != null) 'backdrop_path': backdropPath,
-        'genre_ids': genreIds,
-        'id': id,
-        'original_language': originalLanguage,
-        'original_title': originalTitle,
-        'overview': overview,
-        'popularity': popularity,
-        if (posterPath != null) 'poster_path': posterPath,
-        'release_date': releaseDate,
-        'title': title,
-        'video': video,
-        'vote_average': voteAverage,
-        'vote_count': voteCount,
-      };
+    'adult': adult,
+    if (backdropPath != null) 'backdrop_path': backdropPath,
+    'genre_ids': genreIds,
+    'id': id,
+    'original_language': originalLanguage,
+    'original_title': originalTitle,
+    'overview': overview,
+    'popularity': popularity,
+    if (posterPath != null) 'poster_path': posterPath,
+    'release_date': releaseDate,
+    'title': title,
+    'video': video,
+    'vote_average': voteAverage,
+    'vote_count': voteCount,
+  };
 }
 
 class MovieDetail {
@@ -907,34 +913,32 @@ class MovieDetail {
   }
 
   Map<String, dynamic> toJson() => {
-        'adult': adult,
-        if (backdropPath != null) 'backdrop_path': backdropPath,
-        'belongs_to_collection': belongsToCollection?.toJson(),
-        'budget': budget,
-        'genres': genres.map((e) => e.toJson()).toList(),
-        if (homepage != null) 'homepage': homepage,
-        'id': id,
-        if (imdbId != null) 'imdb_id': imdbId,
-        'original_language': originalLanguage,
-        'original_title': originalTitle,
-        'overview': overview,
-        'popularity': popularity,
-        if (posterPath != null) 'poster_path': posterPath,
-        'production_companies':
-            productionCompanies.map((e) => e.toJson()).toList(),
-        'production_countries':
-            productionCountries.map((e) => e.toJson()).toList(),
-        'release_date': releaseDate,
-        'revenue': revenue,
-        'runtime': runtime,
-        'spoken_languages': spokenLanguages.map((e) => e.toJson()).toList(),
-        'status': status,
-        if (tagline != null) 'tagline': tagline,
-        'title': title,
-        'video': video,
-        'vote_average': voteAverage,
-        'vote_count': voteCount,
-      };
+    'adult': adult,
+    if (backdropPath != null) 'backdrop_path': backdropPath,
+    'belongs_to_collection': belongsToCollection?.toJson(),
+    'budget': budget,
+    'genres': genres.map((e) => e.toJson()).toList(),
+    if (homepage != null) 'homepage': homepage,
+    'id': id,
+    if (imdbId != null) 'imdb_id': imdbId,
+    'original_language': originalLanguage,
+    'original_title': originalTitle,
+    'overview': overview,
+    'popularity': popularity,
+    if (posterPath != null) 'poster_path': posterPath,
+    'production_companies': productionCompanies.map((e) => e.toJson()).toList(),
+    'production_countries': productionCountries.map((e) => e.toJson()).toList(),
+    'release_date': releaseDate,
+    'revenue': revenue,
+    'runtime': runtime,
+    'spoken_languages': spokenLanguages.map((e) => e.toJson()).toList(),
+    'status': status,
+    if (tagline != null) 'tagline': tagline,
+    'title': title,
+    'video': video,
+    'vote_average': voteAverage,
+    'vote_count': voteCount,
+  };
 }
 
 class TopRatedTvResponse {
@@ -962,11 +966,11 @@ class TopRatedTvResponse {
   }
 
   Map<String, dynamic> toJson() => {
-        'page': page,
-        'results': results.map((e) => e.toJson()).toList(),
-        'total_pages': totalPages,
-        'total_results': totalResults,
-      };
+    'page': page,
+    'results': results.map((e) => e.toJson()).toList(),
+    'total_pages': totalPages,
+    'total_results': totalResults,
+  };
 }
 
 class TvShow {
@@ -1014,8 +1018,9 @@ class TvShow {
     return TvShow(
       backdropPath: json['backdrop_path'] as String?,
       firstAirDate: json['first_air_date'] as String? ?? '',
-      genreIds:
-          (json['genre_ids'] as List<dynamic>).map((e) => e as int).toList(),
+      genreIds: (json['genre_ids'] as List<dynamic>)
+          .map((e) => e as int)
+          .toList(),
       id: json['id'] as int,
       name: json['name'] as String,
       originCountry: (json['origin_country'] as List<dynamic>)
@@ -1032,20 +1037,20 @@ class TvShow {
   }
 
   Map<String, dynamic> toJson() => {
-        if (backdropPath != null) 'backdrop_path': backdropPath,
-        'first_air_date': firstAirDate,
-        'genre_ids': genreIds,
-        'id': id,
-        'name': name,
-        'origin_country': originCountry,
-        'original_language': originalLanguage,
-        'original_name': originalName,
-        'overview': overview,
-        'popularity': popularity,
-        if (posterPath != null) 'poster_path': posterPath,
-        'vote_average': voteAverage,
-        'vote_count': voteCount,
-      };
+    if (backdropPath != null) 'backdrop_path': backdropPath,
+    'first_air_date': firstAirDate,
+    'genre_ids': genreIds,
+    'id': id,
+    'name': name,
+    'origin_country': originCountry,
+    'original_language': originalLanguage,
+    'original_name': originalName,
+    'overview': overview,
+    'popularity': popularity,
+    if (posterPath != null) 'poster_path': posterPath,
+    'vote_average': voteAverage,
+    'vote_count': voteCount,
+  };
 }
 
 class TvShowDetail {
@@ -1203,41 +1208,39 @@ class TvShowDetail {
   }
 
   Map<String, dynamic> toJson() => {
-        'adult': adult,
-        if (backdropPath != null) 'backdrop_path': backdropPath,
-        'created_by': createdBy.map((e) => e.toJson()).toList(),
-        'episode_run_time': episodeRunTime,
-        'first_air_date': firstAirDate,
-        'genres': genres.map((e) => e.toJson()).toList(),
-        if (homepage != null) 'homepage': homepage,
-        'id': id,
-        'in_production': inProduction,
-        'languages': languages,
-        'last_air_date': lastAirDate,
-        'last_episode_to_air': lastEpisodeToAir?.toJson(),
-        'name': name,
-        'next_episode_to_air': nextEpisodeToAir?.toJson(),
-        'networks': networks.map((e) => e.toJson()).toList(),
-        'number_of_episodes': numberOfEpisodes,
-        'number_of_seasons': numberOfSeasons,
-        'origin_country': originCountry,
-        'original_language': originalLanguage,
-        'original_name': originalName,
-        'overview': overview,
-        'popularity': popularity,
-        if (posterPath != null) 'poster_path': posterPath,
-        'production_companies':
-            productionCompanies.map((e) => e.toJson()).toList(),
-        'production_countries':
-            productionCountries.map((e) => e.toJson()).toList(),
-        'seasons': seasons.map((e) => e.toJson()).toList(),
-        'spoken_languages': spokenLanguages.map((e) => e.toJson()).toList(),
-        'status': status,
-        if (tagline != null) 'tagline': tagline,
-        'type': type,
-        'vote_average': voteAverage,
-        'vote_count': voteCount,
-      };
+    'adult': adult,
+    if (backdropPath != null) 'backdrop_path': backdropPath,
+    'created_by': createdBy.map((e) => e.toJson()).toList(),
+    'episode_run_time': episodeRunTime,
+    'first_air_date': firstAirDate,
+    'genres': genres.map((e) => e.toJson()).toList(),
+    if (homepage != null) 'homepage': homepage,
+    'id': id,
+    'in_production': inProduction,
+    'languages': languages,
+    'last_air_date': lastAirDate,
+    'last_episode_to_air': lastEpisodeToAir?.toJson(),
+    'name': name,
+    'next_episode_to_air': nextEpisodeToAir?.toJson(),
+    'networks': networks.map((e) => e.toJson()).toList(),
+    'number_of_episodes': numberOfEpisodes,
+    'number_of_seasons': numberOfSeasons,
+    'origin_country': originCountry,
+    'original_language': originalLanguage,
+    'original_name': originalName,
+    'overview': overview,
+    'popularity': popularity,
+    if (posterPath != null) 'poster_path': posterPath,
+    'production_companies': productionCompanies.map((e) => e.toJson()).toList(),
+    'production_countries': productionCountries.map((e) => e.toJson()).toList(),
+    'seasons': seasons.map((e) => e.toJson()).toList(),
+    'spoken_languages': spokenLanguages.map((e) => e.toJson()).toList(),
+    'status': status,
+    if (tagline != null) 'tagline': tagline,
+    'type': type,
+    'vote_average': voteAverage,
+    'vote_count': voteCount,
+  };
 }
 
 class CreatedBy {
@@ -1260,21 +1263,22 @@ class CreatedBy {
       : null;
 
   factory CreatedBy.fromJson(Map<String, dynamic> json) => CreatedBy(
-        id: json['id'] as int,
-        creditId: json['credit_id'] as String,
-        name: json['name'] as String,
-        gender: json['gender'] as int,
-        profilePath: json['profile_path'] as String?,
-      );
+    id: json['id'] as int,
+    creditId: json['credit_id'] as String,
+    name: json['name'] as String,
+    gender: json['gender'] as int,
+    profilePath: json['profile_path'] as String?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'credit_id': creditId,
-        'name': name,
-        'gender': gender,
-        if (profilePath != null) 'profile_path': profilePath,
-      };
+    'id': id,
+    'credit_id': creditId,
+    'name': name,
+    'gender': gender,
+    if (profilePath != null) 'profile_path': profilePath,
+  };
 }
+
 class Country {
   final String iso31661;
   final String englishName;
@@ -1287,16 +1291,16 @@ class Country {
   });
 
   factory Country.fromJson(Map<String, dynamic> json) => Country(
-        iso31661: json['iso_3166_1'] as String,
-        englishName: json['english_name'] as String,
-        nativeName: json['native_name'] as String,
-      );
+    iso31661: json['iso_3166_1'] as String,
+    englishName: json['english_name'] as String,
+    nativeName: json['native_name'] as String,
+  );
 
   Map<String, dynamic> toJson() => {
-        'iso_3166_1': iso31661,
-        'english_name': englishName,
-        'native_name': nativeName,
-      };
+    'iso_3166_1': iso31661,
+    'english_name': englishName,
+    'native_name': nativeName,
+  };
 }
 
 class Language {
@@ -1313,16 +1317,16 @@ class Language {
   String get displayName => name.isNotEmpty ? name : englishName;
 
   factory Language.fromJson(Map<String, dynamic> json) => Language(
-        iso6391: json['iso_639_1'] as String,
-        englishName: json['english_name'] as String,
-        name: json['name'] as String? ?? '',
-      );
+    iso6391: json['iso_639_1'] as String? ?? '',
+    englishName: json['english_name'] as String? ?? '',
+    name: json['name'] as String? ?? '',
+  );
 
   Map<String, dynamic> toJson() => {
-        'iso_639_1': iso6391,
-        'english_name': englishName,
-        'name': name,
-      };
+    'iso_639_1': iso6391,
+    'english_name': englishName,
+    'name': name,
+  };
 }
 
 class GenreListResponse {
@@ -1338,8 +1342,8 @@ class GenreListResponse {
       );
 
   Map<String, dynamic> toJson() => {
-        'genres': genres.map((e) => e.toJson()).toList(),
-      };
+    'genres': genres.map((e) => e.toJson()).toList(),
+  };
 }
 
 class ProductionCompanyDetail {
@@ -1371,9 +1375,9 @@ class ProductionCompanyDetail {
         description: json['description'] as String? ?? '',
         headquarters: json['headquarters'] as String? ?? '',
         homepage: json['homepage'] as String?,
-        id: json['id'] as int,
+        id: json['id'] as int? ?? 0,
         logoPath: json['logo_path'] as String?,
-        name: json['name'] as String,
+        name: json['name'] as String? ?? '',
         originCountry: json['origin_country'] as String? ?? '',
         parentCompany: json['parent_company'] != null
             ? ParentCompany.fromJson(
@@ -1383,15 +1387,15 @@ class ProductionCompanyDetail {
       );
 
   Map<String, dynamic> toJson() => {
-        'description': description,
-        'headquarters': headquarters,
-        if (homepage != null) 'homepage': homepage,
-        'id': id,
-        if (logoPath != null) 'logo_path': logoPath,
-        'name': name,
-        'origin_country': originCountry,
-        'parent_company': parentCompany?.toJson(),
-      };
+    'description': description,
+    'headquarters': headquarters,
+    if (homepage != null) 'homepage': homepage,
+    'id': id,
+    if (logoPath != null) 'logo_path': logoPath,
+    'name': name,
+    'origin_country': originCountry,
+    'parent_company': parentCompany?.toJson(),
+  };
 }
 
 class ParentCompany {
@@ -1405,14 +1409,515 @@ class ParentCompany {
       logoPath != null ? 'https://image.tmdb.org/t/p/w200$logoPath' : null;
 
   factory ParentCompany.fromJson(Map<String, dynamic> json) => ParentCompany(
-        id: json['id'] as int,
-        name: json['name'] as String,
-        logoPath: json['logo_path'] as String?,
-      );
+    id: json['id'] as int? ?? 0,
+    name: json['name'] as String? ?? '',
+    logoPath: json['logo_path'] as String?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        if (logoPath != null) 'logo_path': logoPath,
-      };
+    'id': id,
+    'name': name,
+    if (logoPath != null) 'logo_path': logoPath,
+  };
+}
+
+class PersonDetails {
+  final bool adult;
+  final List<String> alsoKnownAs;
+  final String biography;
+  final String? birthday;
+  final String? deathday;
+  final int gender;
+  final String? homepage;
+  final int id;
+  final String imdbId;
+  final String knownForDepartment;
+  final String name;
+  final String placeOfBirth;
+  final double popularity;
+  final String? profilePath;
+
+  PersonDetails({
+    required this.adult,
+    required this.alsoKnownAs,
+    required this.biography,
+    this.birthday,
+    this.deathday,
+    required this.gender,
+    this.homepage,
+    required this.id,
+    required this.imdbId,
+    required this.knownForDepartment,
+    required this.name,
+    required this.placeOfBirth,
+    required this.popularity,
+    this.profilePath,
+  });
+
+  factory PersonDetails.fromJson(Map<String, dynamic> json) {
+    return PersonDetails(
+      adult: json['adult'] as bool? ?? false,
+      alsoKnownAs: List<String>.from(json['also_known_as'] ?? []),
+      biography: json['biography'] as String? ?? '',
+      birthday: json['birthday'] as String?,
+      deathday: json['deathday'] as String?,
+      gender: json['gender'] as int? ?? 0,
+      homepage: json['homepage'] as String?,
+      id: json['id'] as int? ?? 0,
+      imdbId: json['imdb_id'] as String? ?? '',
+      knownForDepartment: json['known_for_department'] as String? ?? '',
+      name: json['name'] as String? ?? '',
+      placeOfBirth: json['place_of_birth'] as String? ?? '',
+      popularity: (json['popularity'] as num? ?? 0).toDouble(),
+      profilePath: json['profile_path'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'adult': adult,
+      'also_known_as': alsoKnownAs,
+      'biography': biography,
+      'birthday': birthday,
+      'deathday': deathday,
+      'gender': gender,
+      'homepage': homepage,
+      'id': id,
+      'imdb_id': imdbId,
+      'known_for_department': knownForDepartment,
+      'name': name,
+      'place_of_birth': placeOfBirth,
+      'popularity': popularity,
+      'profile_path': profilePath,
+    };
+  }
+
+  @override
+  String toString() => 'PersonDetails(id: $id, name: $name)';
+}
+
+class PersonCredits {
+  final int id;
+  final List<CastCredit> cast;
+  final List<CrewCredit> crew;
+
+  PersonCredits({required this.id, required this.cast, required this.crew});
+
+  factory PersonCredits.fromJson(Map<String, dynamic> json) {
+    return PersonCredits(
+      id: json['id'] as int,
+      cast: (json['cast'] as List<dynamic>)
+          .map((e) => CastCredit.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      crew: (json['crew'] as List<dynamic>)
+          .map((e) => CrewCredit.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'cast': cast.map((e) => e.toJson()).toList(),
+    'crew': crew.map((e) => e.toJson()).toList(),
+  };
+}
+
+// Base class for shared fields between movie and TV credits
+abstract class BaseCredit {
+  final bool adult;
+  final String? backdropPath;
+  final List<int> genreIds;
+  final int id;
+  final String originalLanguage;
+  final String? overview;
+  final double popularity;
+  final String? posterPath;
+  final double voteAverage;
+  final int voteCount;
+  final String character;
+  final String creditId;
+  final String mediaType;
+
+  const BaseCredit({
+    required this.adult,
+    this.backdropPath,
+    required this.genreIds,
+    required this.id,
+    required this.originalLanguage,
+    this.overview,
+    required this.popularity,
+    this.posterPath,
+    required this.voteAverage,
+    required this.voteCount,
+    required this.character,
+    required this.creditId,
+    required this.mediaType,
+  });
+}
+
+class MovieCastCredit extends CastCredit {
+  final String? originalTitle;
+  final String? releaseDate;
+  final String? title;
+  final bool video;
+  final int order;
+
+  const MovieCastCredit({
+    required super.adult,
+    super.backdropPath,
+    required super.genreIds,
+    required super.id,
+    required super.originalLanguage,
+    super.overview,
+    required super.popularity,
+    super.posterPath,
+    required super.voteAverage,
+    required super.voteCount,
+    required super.character,
+    required super.creditId,
+    required super.mediaType,
+    this.originalTitle,
+    this.releaseDate,
+    this.title,
+    required this.video,
+    required this.order,
+  });
+
+  factory MovieCastCredit.fromJson(Map<String, dynamic> json) {
+    return MovieCastCredit(
+      adult: json['adult'] as bool? ?? false,
+      backdropPath: json['backdrop_path'] as String?,
+      genreIds: List<int>.from(json['genre_ids'] ?? []),
+      id: json['id'] as int? ?? 0,
+      originalLanguage: json['original_language'] as String? ?? '',
+      overview: json['overview'] as String?,
+      popularity: (json['popularity'] as num? ?? 0).toDouble(),
+      posterPath: json['poster_path'] as String?,
+      voteAverage: (json['vote_average'] as num? ?? 0).toDouble(),
+      voteCount: json['vote_count'] as int? ?? 0,
+      character: json['character'] as String? ?? '',
+      creditId: json['credit_id'] as String? ?? '',
+      mediaType: json['media_type'] as String? ?? 'movie',
+      originalTitle: json['original_title'] as String?,
+      releaseDate: json['release_date'] as String?,
+      title: json['title'] as String?,
+      video: json['video'] as bool? ?? false,
+      order: json['order'] as int? ?? 0,
+    );
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+    'adult': adult,
+    'backdrop_path': backdropPath,
+    'genre_ids': genreIds,
+    'id': id,
+    'original_language': originalLanguage,
+    'overview': overview,
+    'popularity': popularity,
+    'poster_path': posterPath,
+    'vote_average': voteAverage,
+    'vote_count': voteCount,
+    'character': character,
+    'credit_id': creditId,
+    'media_type': mediaType,
+    'original_title': originalTitle,
+    'release_date': releaseDate,
+    'title': title,
+    'video': video,
+    'order': order,
+  };
+}
+
+class TvCastCredit extends CastCredit {
+  final List<String> originCountry;
+  final String? originalName;
+  final String? firstAirDate;
+  final String? name;
+  final int episodeCount;
+
+  const TvCastCredit({
+    required super.adult,
+    super.backdropPath,
+    required super.genreIds,
+    required super.id,
+    required super.originalLanguage,
+    super.overview,
+    required super.popularity,
+    super.posterPath,
+    required super.voteAverage,
+    required super.voteCount,
+    required super.character,
+    required super.creditId,
+    required super.mediaType,
+    required this.originCountry,
+    this.originalName,
+    this.firstAirDate,
+    this.name,
+    required this.episodeCount,
+  });
+
+  factory TvCastCredit.fromJson(Map<String, dynamic> json) {
+    return TvCastCredit(
+      adult: json['adult'] as bool? ?? false,
+      backdropPath: json['backdrop_path'] as String?,
+      genreIds: List<int>.from(json['genre_ids'] ?? []),
+      id: json['id'] as int? ?? 0,
+      originalLanguage: json['original_language'] as String? ?? '',
+      overview: json['overview'] as String?,
+      popularity: (json['popularity'] as num? ?? 0).toDouble(),
+      posterPath: json['poster_path'] as String?,
+      voteAverage: (json['vote_average'] as num? ?? 0).toDouble(),
+      voteCount: json['vote_count'] as int? ?? 0,
+      character: json['character'] as String? ?? '',
+      creditId: json['credit_id'] as String? ?? '',
+      mediaType: json['media_type'] as String? ?? 'tv',
+      originCountry: List<String>.from(json['origin_country'] ?? []),
+      originalName: json['original_name'] as String?,
+      firstAirDate: json['first_air_date'] as String?,
+      name: json['name'] as String?,
+      episodeCount: json['episode_count'] as int? ?? 0,
+    );
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+    'adult': adult,
+    'backdrop_path': backdropPath,
+    'genre_ids': genreIds,
+    'id': id,
+    'original_language': originalLanguage,
+    'overview': overview,
+    'popularity': popularity,
+    'poster_path': posterPath,
+    'vote_average': voteAverage,
+    'vote_count': voteCount,
+    'character': character,
+    'credit_id': creditId,
+    'media_type': mediaType,
+    'origin_country': originCountry,
+    'original_name': originalName,
+    'first_air_date': firstAirDate,
+    'name': name,
+    'episode_count': episodeCount,
+  };
+}
+
+// Sealed union for crew (movie or tv)
+sealed class CrewCredit extends BaseCredit {
+  final String department;
+  final String job;
+
+  const CrewCredit({
+    required super.adult,
+    super.backdropPath,
+    required super.genreIds,
+    required super.id,
+    required super.originalLanguage,
+    super.overview,
+    required super.popularity,
+    super.posterPath,
+    required super.voteAverage,
+    required super.voteCount,
+    required super.character,
+    required super.creditId,
+    required super.mediaType,
+    required this.department,
+    required this.job,
+  });
+
+  factory CrewCredit.fromJson(Map<String, dynamic> json) {
+    final mediaType = json['media_type'] as String? ?? '';
+    return switch (mediaType) {
+      'movie' => MovieCrewCredit.fromJson(json),
+      'tv' => TvCrewCredit.fromJson(json),
+      _ => throw ArgumentError('Unknown media_type: $mediaType'),
+    };
+  }
+
+  Map<String, dynamic> toJson();
+}
+
+class MovieCrewCredit extends CrewCredit {
+  final String? originalTitle;
+  final String? releaseDate;
+  final String? title;
+  final bool video;
+
+  MovieCrewCredit({
+    required super.adult,
+    super.backdropPath,
+    required super.genreIds,
+    required super.id,
+    required super.originalLanguage,
+    this.originalTitle,
+    super.overview,
+    required super.popularity,
+    super.posterPath,
+    this.releaseDate,
+    this.title,
+    required this.video,
+    required super.voteAverage,
+    required super.voteCount,
+    required super.character,
+    required super.creditId,
+    required super.department,
+    required super.job,
+    required super.mediaType,
+  });
+
+  factory MovieCrewCredit.fromJson(Map<String, dynamic> json) {
+    return MovieCrewCredit(
+      adult: json['adult'] as bool? ?? false,
+      backdropPath: json['backdrop_path'] as String?,
+      genreIds: List<int>.from(json['genre_ids'] ?? []),
+      id: json['id'] as int? ?? 0,
+      originalLanguage: json['original_language'] as String? ?? '',
+      originalTitle: json['original_title'] as String?,
+      overview: json['overview'] as String?,
+      popularity: (json['popularity'] as num? ?? 0).toDouble(),
+      posterPath: json['poster_path'] as String?,
+      releaseDate: json['release_date'] as String?,
+      title: json['title'] as String?,
+      video: json['video'] as bool? ?? false,
+      voteAverage: (json['vote_average'] as num? ?? 0).toDouble(),
+      voteCount: json['vote_count'] as int? ?? 0,
+      creditId: json['credit_id'] as String? ?? '',
+      department: json['department'] as String? ?? '',
+      job: json['job'] as String? ?? '',
+      mediaType: json['media_type'] as String? ?? 'movie',
+      character: '', // Movie crew doesn't usually have a character
+    );
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+    'adult': adult,
+    'backdrop_path': backdropPath,
+    'genre_ids': genreIds,
+    'id': id,
+    'original_language': originalLanguage,
+    'original_title': originalTitle,
+    'overview': overview,
+    'popularity': popularity,
+    'poster_path': posterPath,
+    'release_date': releaseDate,
+    'title': title,
+    'video': video,
+    'vote_average': voteAverage,
+    'vote_count': voteCount,
+    'credit_id': creditId,
+    'department': department,
+    'job': job,
+    'media_type': mediaType,
+  };
+}
+
+class TvCrewCredit extends CrewCredit {
+  final List<String> originCountry;
+  final String? originalName;
+  final String? firstAirDate;
+  final String? name;
+  final int episodeCount;
+
+  TvCrewCredit({
+    required super.adult,
+    super.backdropPath,
+    required super.genreIds,
+    required super.id,
+    required this.originCountry,
+    required super.originalLanguage,
+    this.originalName,
+    super.overview,
+    required super.popularity,
+    super.posterPath,
+    this.firstAirDate,
+    this.name,
+    required super.voteAverage,
+    required super.voteCount,
+    required super.creditId,
+    required super.department,
+    required this.episodeCount,
+    required super.job,
+    required super.mediaType,
+    required super.character,
+  });
+
+  factory TvCrewCredit.fromJson(Map<String, dynamic> json) {
+    return TvCrewCredit(
+      adult: json['adult'] as bool? ?? false,
+      backdropPath: json['backdrop_path'] as String?,
+      genreIds: List<int>.from(json['genre_ids'] ?? []),
+      id: json['id'] as int? ?? 0,
+      originCountry: List<String>.from(json['origin_country'] ?? []),
+      originalLanguage: json['original_language'] as String? ?? '',
+      originalName: json['original_name'] as String?,
+      overview: json['overview'] as String?,
+      popularity: (json['popularity'] as num? ?? 0).toDouble(),
+      posterPath: json['poster_path'] as String?,
+      firstAirDate: json['first_air_date'] as String?,
+      name: json['name'] as String?,
+      voteAverage: (json['vote_average'] as num? ?? 0).toDouble(),
+      voteCount: json['vote_count'] as int? ?? 0,
+      creditId: json['credit_id'] as String? ?? '',
+      department: json['department'] as String? ?? '',
+      episodeCount: json['episode_count'] as int? ?? 0,
+      job: json['job'] as String? ?? '',
+      mediaType: json['media_type'] as String? ?? 'tv',
+      character: '',
+    );
+  }
+
+  @override
+  Map<String, dynamic> toJson() => {
+    'adult': adult,
+    'backdrop_path': backdropPath,
+    'genre_ids': genreIds,
+    'id': id,
+    'origin_country': originCountry,
+    'original_language': originalLanguage,
+    'original_name': originalName,
+    'overview': overview,
+    'popularity': popularity,
+    'poster_path': posterPath,
+    'first_air_date': firstAirDate,
+    'name': name,
+    'vote_average': voteAverage,
+    'vote_count': voteCount,
+    'credit_id': creditId,
+    'department': department,
+    'episode_count': episodeCount,
+    'job': job,
+    'media_type': mediaType,
+  };
+}
+
+// Sealed union for cast (movie or tv)
+sealed class CastCredit extends BaseCredit {
+  const CastCredit({
+    required super.adult,
+    super.backdropPath,
+    required super.genreIds,
+    required super.id,
+    required super.originalLanguage,
+    super.overview,
+    required super.popularity,
+    super.posterPath,
+    required super.voteAverage,
+    required super.voteCount,
+    required super.character,
+    required super.creditId,
+    required super.mediaType,
+  });
+
+  factory CastCredit.fromJson(Map<String, dynamic> json) {
+    final mediaType = json['media_type'] as String? ?? '';
+    return switch (mediaType) {
+      'movie' => MovieCastCredit.fromJson(json),
+      'tv' => TvCastCredit.fromJson(json),
+      _ => throw ArgumentError('Unknown media_type: $mediaType'),
+    };
+  }
+
+  Map<String, dynamic> toJson();
 }

@@ -1,9 +1,12 @@
 import 'package:cinemanic/models/tmdb_models.dart';
+import 'package:cinemanic/screens/genre_detail_screen.dart';
+import 'package:cinemanic/screens/person_details_screen.dart';
+import 'package:cinemanic/screens/production_company_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class ContentTabsWidget extends StatelessWidget {
   final CreditResponse credits;
-  final List<String> genres;
+  final List<Genre> genres;
   final List<AlternativeTitle> altTitles;
   final List<ReleaseInfo> releases;
   final List<ProductionCompany> studios;
@@ -44,8 +47,8 @@ class ContentTabsWidget extends StatelessWidget {
               children: [
                 _buildCastTab(),
                 _buildCrewTab(),
-                _buildDetailsTab(),
-                _buildGenreTab(),
+                _buildDetailsTab(context),
+                _buildGenreTab(context),
                 _buildReleasesTab(),
               ],
             ),
@@ -56,13 +59,23 @@ class ContentTabsWidget extends StatelessWidget {
   }
 
   Widget _buildCastTab() {
-    if (credits.cast.isEmpty)
+    if (credits.cast.isEmpty) {
       return const Center(child: Text('No cast information available'));
+    }
     return ListView.builder(
       itemCount: credits.cast.length,
       itemBuilder: (context, index) {
         final person = credits.cast[index];
         return ListTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PersonDetailsScreen(personId: person.id.toString()),
+              ),
+            );
+          },
           leading: person.profilePath != null
               ? CircleAvatar(backgroundImage: NetworkImage(person.profileUrl!))
               : const CircleAvatar(child: Icon(Icons.person)),
@@ -82,6 +95,15 @@ class ContentTabsWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         final person = credits.crew[index];
         return ListTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PersonDetailsScreen(personId: person.id.toString()),
+              ),
+            );
+          },
           leading: person.profilePath != null
               ? CircleAvatar(backgroundImage: NetworkImage(person.profileUrl!))
               : const CircleAvatar(child: Icon(Icons.person)),
@@ -92,11 +114,48 @@ class ContentTabsWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailsTab() {
+  Widget _buildDetailsTab(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        _detailRow('Studios', studios.map((e) => e.name).join(', ')),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Studios',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: studios.map((studio) {
+                  return ListTile(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductionCompanyDetailScreen(
+                            companyId: studio.id.toString(),
+                          ),
+                        ),
+                      );
+                    },
+                    title: Text(studio.name),
+                  );
+                }).toList(),
+              ),
+              if (studios.isEmpty) const Text('N/A'),
+              const Divider(),
+            ],
+          ),
+        ),
         _detailRow('Countries', countries.map((e) => e.name).join(', ')),
         _detailRow('Original Language', originalLanguage.toUpperCase()),
         if (altTitles.isNotEmpty)
@@ -108,13 +167,30 @@ class ContentTabsWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildGenreTab() {
+  Widget _buildGenreTab(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Wrap(
         spacing: 8,
         runSpacing: 8,
-        children: genres.map((g) => Chip(label: Text(g))).toList(),
+        children:
+            genres.map((genre) {
+              return ActionChip(
+                label: Text(genre.name),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => GenreDetailScreen(
+                            genreId: genre.id,
+                            genreName: genre.name,
+                          ),
+                    ),
+                  );
+                },
+              );
+            }).toList(),
       ),
     );
   }

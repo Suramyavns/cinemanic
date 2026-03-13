@@ -7,6 +7,7 @@ import 'package:cinemanic/services/content_api/movies.dart';
 import 'package:cinemanic/services/content_api/search.dart';
 import 'package:cinemanic/services/content_api/tv.dart';
 import 'package:cinemanic/services/content_api/trending.dart';
+import 'package:cinemanic/screens/discover_results_screen.dart';
 import 'package:cinemanic/screens/content_screen.dart';
 import 'package:cinemanic/widgets/home_screen_widgets/content_row_widget.dart';
 import 'package:cinemanic/widgets/reusable_widgets/search_bar_widget.dart';
@@ -86,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } catch (e) {
       // Handle error so isLoading doesn't spin forever
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -168,12 +169,38 @@ class _HomeScreenState extends State<HomeScreen> {
                               data: popularMoviesData,
                               mediaType: 'movie',
                               onReturn: loadData,
+                              onViewMore: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DiscoverResultsScreen(
+                                      title: 'Popular Movies',
+                                      fetchFunction: (page) =>
+                                          fetchPopularMovies(page: page),
+                                      mediaType: 'movie',
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             ContentRowWidget(
                               title: 'Top Rated Shows',
                               data: topShowsData,
                               mediaType: 'tv',
                               onReturn: loadData,
+                              onViewMore: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DiscoverResultsScreen(
+                                      title: 'Top Rated Shows',
+                                      fetchFunction: (page) =>
+                                          fetchTopShows(page: page),
+                                      mediaType: 'tv',
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             SizedBox(height: 12),
                           ],

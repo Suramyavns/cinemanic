@@ -1,5 +1,4 @@
 import 'package:cinemanic/utils/notifiers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NavigationBarWidget extends StatelessWidget {

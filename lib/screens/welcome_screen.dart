@@ -51,44 +51,51 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          WelcomeBackground(controller: _controller),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  WelcomeHeader(
-                    fadeAnimation: _fadeAnimation,
-                    controller: _controller,
-                  ),
-                  const SizedBox(height: 80),
-                  GoogleSignInButton(
-                    fadeAnimation: _fadeAnimation,
-                    slideAnimation: _slideAnimation,
-                  ),
-                  const SizedBox(height: 24),
-                  // Footer Text
-                  FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: Text(
-                      'By continuing, you agree to our Terms & Privacy Policy',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.5),
-                        fontSize: 12,
-                      ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double deviceHeight = constraints.maxHeight;
+          return Stack(
+            children: [
+              WelcomeBackground(controller: _controller),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        WelcomeHeader(
+                          fadeAnimation: _fadeAnimation,
+                          controller: _controller,
+                        ),
+                        SizedBox(height: deviceHeight * .025),
+                        GoogleSignInButton(
+                          fadeAnimation: _fadeAnimation,
+                          slideAnimation: _slideAnimation,
+                        ),
+                        SizedBox(height: deviceHeight * 0.025),
+                        // Footer Text
+                        FadeTransition(
+                          opacity: _fadeAnimation,
+                          child: Text(
+                            'By continuing, you agree to our Terms & Privacy Policy',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: 0.5),
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 32),
-                ],
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }

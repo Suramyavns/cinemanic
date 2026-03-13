@@ -1,5 +1,4 @@
 import 'package:cinemanic/screens/video_player.dart';
-import 'package:cinemanic/utils/images.dart';
 import 'package:flutter/material.dart';
 
 class BannerWidget extends StatelessWidget {
@@ -31,7 +30,23 @@ class BannerWidget extends StatelessWidget {
         SizedBox(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.network(imageUrlBuilder(imagePath), fit: BoxFit.fill),
+            child: imagePath.isNotEmpty
+                ? Image.network(
+                    imagePath,
+                    fit: BoxFit.fill,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: Colors.grey[900],
+                      child: const Icon(Icons.broken_image, size: 50),
+                    ),
+                  )
+                : Image.asset(
+                    'assets/images/collage.jpg',
+                    fit: BoxFit.fill,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: Colors.grey[900],
+                      child: const Icon(Icons.broken_image, size: 50),
+                    ),
+                  ),
           ),
         ),
         // Gradient Overlay for Buttons

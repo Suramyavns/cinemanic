@@ -13,16 +13,28 @@ class GoogleSignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    double getButtonWidth() {
+      if (deviceWidth > 1024) {
+        return deviceWidth * 0.4;
+      } else if (deviceWidth > 600) {
+        return deviceWidth * 0.4;
+      } else {
+        return deviceWidth * 0.9;
+      }
+    }
+
     return SlideTransition(
       position: slideAnimation,
       child: FadeTransition(
         opacity: fadeAnimation,
         child: Container(
+          width: getButtonWidth(),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withValues(alpha: 0.3),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -55,17 +67,11 @@ class GoogleSignInButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/google_logo.png',
-                  height: 24,
-                ),
+                Image.asset('assets/images/google_logo.png', height: 24),
                 const SizedBox(width: 12),
                 const Text(
                   'Continue with Google',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

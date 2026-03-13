@@ -11,12 +11,14 @@ class ContentRowWidget extends StatefulWidget {
     required this.data,
     required this.mediaType,
     this.onReturn,
+    this.onViewMore,
   });
 
   final String title;
   final dynamic data;
   final String mediaType;
   final VoidCallback? onReturn;
+  final VoidCallback? onViewMore;
 
   @override
   State<ContentRowWidget> createState() => _ContentRowWidgetState();
@@ -47,24 +49,52 @@ class _ContentRowWidgetState extends State<ContentRowWidget> {
     if (results.isEmpty) return const SizedBox.shrink();
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 12),
+      margin: const EdgeInsets.symmetric(vertical: 12),
       width: double.infinity,
       child: Column(
         spacing: 12,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.title,
-            textAlign: TextAlign.left,
-            style: KTextStyle.headingTextStyle,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                widget.title,
+                textAlign: TextAlign.left,
+                style: KTextStyle.headingTextStyle,
+              ),
+              if (widget.onViewMore != null)
+                GestureDetector(
+                  onTap: widget.onViewMore,
+                  child: const Row(
+                    children: [
+                      Text(
+                        'view more',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(width: 4),
+                      Icon(
+                        Icons.double_arrow,
+                        color: Colors.grey,
+                        size: 14,
+                      ),
+                    ],
+                  ),
+                ),
+            ],
           ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               spacing: 16,
-              children: List.generate(
-                results.length > 10 ? 10 : results.length,
-                (index) {
+              children: [
+                ...List.generate(results.length > 10 ? 10 : results.length, (
+                  index,
+                ) {
                   return ContentCardWidget(
                     imageSrc: imageUrlBuilder(results[index].posterPath ?? ''),
                     contentId: results[index].id,
@@ -73,8 +103,8 @@ class _ContentRowWidgetState extends State<ContentRowWidget> {
                         : widget.mediaType,
                     onReturn: widget.onReturn,
                   );
-                },
-              ),
+                }),
+              ],
             ),
           ),
         ],
