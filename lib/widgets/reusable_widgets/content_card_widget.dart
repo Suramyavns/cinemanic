@@ -39,7 +39,9 @@ class _ContentCardWidgetState extends State<ContentCardWidget> {
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Image.network(widget.imageSrc, fit: BoxFit.cover),
+          child: widget.imageSrc.isNotEmpty
+              ? Image.network(widget.imageSrc, fit: BoxFit.cover)
+              : Image.asset('assets/images/banner.png', fit: BoxFit.cover),
         ),
       ),
     );

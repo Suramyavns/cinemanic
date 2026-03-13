@@ -40,7 +40,7 @@ class BannerWidget extends StatelessWidget {
                     ),
                   )
                 : Image.asset(
-                    'assets/images/collage.jpg',
+                    'assets/images/banner.png',
                     fit: BoxFit.fill,
                     errorBuilder: (context, error, stackTrace) => Container(
                       color: Colors.grey[900],
