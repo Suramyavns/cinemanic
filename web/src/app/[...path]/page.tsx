@@ -1,8 +1,11 @@
 'use client'
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { useEffect, Suspense, useState } from "react";
+import { useEffect, useRef, useCallback, Suspense, useState } from "react";
 import { ChevronLeft, SkipForward } from 'lucide-react';
 import { fetchShowDetails, fetchMovieDetails } from "@/services/tmdb";
+import { auth } from "@/lib/firebase";
+
+const PROGRESS_FLUSH_INTERVAL  = 10000;
 
 function PlayerContent() {
   const path = usePathname();
@@ -14,13 +17,62 @@ function PlayerContent() {
   const startAt = startAtParam ? parseFloat(startAtParam) : null;
   const [details, setDetails] = useState<any>(null);
 
-  useEffect(() => {
-    let lastPostTime = 0;
+  const pendingMediaDataRef = useRef<any>(null);
+  const lastSavedJsonRef = useRef<string | null>(null);
 
-    const handleMessage = async (event: MessageEvent) => {
+  // The token in the URL is a Firebase ID token grabbed once when the player
+  // was opened. It expires after an hour and is never refreshed, so long
+  // sessions silently 401 on every save after that. Always prefer a fresh
+  // token from the live auth instance; the URL token is only a fallback for
+  // the brief window before Firebase auth rehydrates (AuthGuard skips the
+  // auth check on player routes, so that window isn't guaranteed to be closed
+  // by the time this component mounts).
+  const getAuthToken = useCallback(async () => {
+    if (auth.currentUser) {
+      try {
+        return await auth.currentUser.getIdToken();
+      } catch (error) {
+        console.error('Failed to refresh auth token:', error);
+      }
+    }
+    return token;
+  }, [token]);
+
+  const saveProgress = useCallback(async (mediaData: any, opts: { keepalive?: boolean } = {}) => {
+    if (!mediaData) return;
+    const json = JSON.stringify(mediaData);
+    if (json === lastSavedJsonRef.current) return;
+
+    const authToken = await getAuthToken();
+    if (!authToken) return;
+
+    try {
+      const res = await fetch('/api/watch/progress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`
+        },
+        body: json,
+        keepalive: opts.keepalive ?? false,
+      });
+
+      if (!res.ok) {
+        console.error('Failed to sync watch progress:', res.status, await res.text().catch(() => ''));
+        return;
+      }
+      lastSavedJsonRef.current = json;
+    } catch (error) {
+      console.error('Failed to sync watch progress:', error);
+    }
+  }, [getAuthToken]);
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
       const playerUrl = process.env.NEXT_PUBLIC_PLAYER_URL || 'https://vidlink.pro';
-      const animePlayerUrl = 'https://vidsrcme.ru'; 
-      if (event.origin !== playerUrl && !event.origin.includes('vidsrcme.ru')) return;
+      let playerOrigin = playerUrl;
+      try { playerOrigin = new URL(playerUrl).origin; } catch { /* keep raw value */ }
+      if (event.origin !== playerOrigin && !event.origin.includes('vidsrcme.ru')) return;
 
       if (event.data?.type === 'MEDIA_DATA') {
         const mediaData = event.data.data;
@@ -28,30 +80,39 @@ function PlayerContent() {
         if ((window as any).WatchHistoryChannel) {
              (window as any).WatchHistoryChannel.postMessage(JSON.stringify(mediaData));
         }
-        
-        const now = Date.now();
-        if (token && now - lastPostTime > 10000) {
-          lastPostTime = now;
-          try {
-            fetch('/api/watch/progress', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-              },
-              body: JSON.stringify({ mediaData }),
-            });
-          } catch (error) {
-            console.error('Failed to sync watch progress:', error);
-          }
-        }
+
+        pendingMediaDataRef.current = mediaData;
       }
     };
 
+    // Trailing-edge flush: guarantees the latest position is actually saved
+    // at a fixed cadence, instead of only-ever dropping updates that arrive
+    // less than 10s apart with no follow-up save.
+    const interval = setInterval(() => {
+      if (pendingMediaDataRef.current) saveProgress(pendingMediaDataRef.current);
+    }, PROGRESS_FLUSH_INTERVAL);
+
+    // A plain fetch can get cancelled when the tab is closed/backgrounded;
+    // keepalive lets it complete after the page starts unloading.
+    const flushOnHide = () => {
+      if (pendingMediaDataRef.current) saveProgress(pendingMediaDataRef.current, { keepalive: true });
+    };
+    const handleVisibility = () => {
+      if (document.visibilityState === 'hidden') flushOnHide();
+    };
+
     window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [token]);    
-  
+    window.addEventListener('pagehide', flushOnHide);
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+      window.removeEventListener('pagehide', flushOnHide);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      clearInterval(interval);
+    };
+  }, [saveProgress]);
+
   const parts = path.split('/').filter(Boolean);
   const mediaType = parts[0];
   const id = parts[1];
@@ -60,24 +121,28 @@ function PlayerContent() {
 
   useEffect(() => {
     const loadDetails = async () => {
-      if (!token) return;
+      const authToken = await getAuthToken();
+      if (!authToken) return;
       try {
-        const data = mediaType === 'movie' 
-          ? await fetchMovieDetails(id, token)
-          : await fetchShowDetails(id, token);
+        const data = mediaType === 'movie'
+          ? await fetchMovieDetails(id, authToken)
+          : await fetchShowDetails(id, authToken);
         setDetails(data);
       } catch (error) {
         console.error('Failed to load details for navigation:', error);
       }
     };
     loadDetails();
-  }, [id, mediaType, token]);
+  }, [id, mediaType, getAuthToken]);
 
   // Record initial watch history entry
   useEffect(() => {
-    if (!token || !details) return;
+    if (!details) return;
 
     const recordHistory = async () => {
+      const authToken = await getAuthToken();
+      if (!authToken) return;
+
       try {
         const mediaData = {
           id: details.id,
@@ -92,23 +157,32 @@ function PlayerContent() {
           last_episode_watched: mediaType === 'tv' ? episode.toString() : undefined,
         };
 
-        await fetch('/api/watch/progress', {
+        const res = await fetch('/api/watch/progress', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${authToken}`
           },
           body: JSON.stringify({ mediaData: { [details.id]: mediaData } }),
         });
+
+        if (!res.ok) {
+          console.error('Failed to record initial watch history:', res.status, await res.text().catch(() => ''));
+        }
       } catch (error) {
         console.error('Failed to record initial watch history:', error);
       }
     };
 
     recordHistory();
-  }, [token, details?.id, mediaType, season, episode]); // Run when content changes
+  }, [getAuthToken, details?.id, mediaType, season, episode]); // Run when content changes
 
   const handleNextEpisode = () => {
+    // Flush whatever position we have for the episode being left — the
+    // player iframe gets torn down immediately on navigation, so this is the
+    // last chance to save it.
+    if (pendingMediaDataRef.current) saveProgress(pendingMediaDataRef.current);
+
     if (!details || mediaType !== 'tv') {
       // Fallback simple increment if details haven't loaded
       const nextEpisode = episode + 1;
